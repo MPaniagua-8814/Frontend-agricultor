@@ -1,0 +1,103 @@
+<div class="card">
+
+  <div class="row">
+    <div class="col-md-12">
+      <mat-card>
+        <h1 class="text-center">{{ title }} </h1>
+        <h2 class="text-center">Cuenta No. #{{idCuenta}} </h2>
+      </mat-card>
+    </div>
+  </div>
+</div>
+<div class="">
+
+  <div class="row">
+    <mat-card>
+    <div class="col-md-12">
+        <div class="modal-footer">
+
+          <div class="col-md-2">
+
+            <button (click)='regresar()' style="border-radius: 10px;" class="btn btn-secondary" type="submit">
+              <i class="fa fa-arrow-left" aria-hidden="true"></i> Regresar
+            </button>
+          </div>
+
+          <div class="">
+
+            <button style="border-radius: 10px;" class="btn btn-primary" type="submit">
+              <a [routerLink]="['crearParcialidad']">
+                <span style="color:white;">
+                  <i class="fa fa-plus"></i>
+                  <span class="sm" >&nbsp; Nueva Parcialidad</span>
+                </span>
+              </a>
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+</div>
+<br><br>
+<div class="">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <form>
+
+                <table class="table table-striped table-hover">
+                  <thead>
+                    <tr class="table-secondary">
+                      <th scope="col" class="text-left">#</th>
+                      <th scope="col" class="text-left">Placa Transporte</th>
+                      <th scope="col" class="text-left">Nombre Transportista</th>
+                      <th scope="col" class="text-left">Peso (Kg)</th>
+                      <!-- <th scope="col" class="text-left">Peso Báscula (Peso Cabal SA)</th> -->
+                      <th scope="col" class="text-left">Tipo de Medida</th>
+                      <th scope="col" class="text-left">Fecha Recepcion Parcialidad</th>
+                      <!-- <th scope="col"></th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <tr *ngIf="parcialidades?.length===0">
+                      <td colspan="7" class="text-center">
+                        No existen registros.
+                      </td>
+                    </tr>
+                    <tr *ngFor="let dato of parcialidades">
+                      <td>{{dato.idParcialidad}}</td>
+                      <td>{{dato.idTransporte.placa}}</td>
+                      <!-- <td>{{dato.idTransportista.nombre}}</td> -->
+                      <td>{{dato.idTransportista.nombre}}</td>
+                      <td>{{dato.pesoParcialidad}}</td>
+                      <!-- <td>{{dato.pesoBascula}}</td> -->
+                      <td>{{dato.tipoMedida}}</td>
+                      <td>{{dato.fechaRecepcionParcialidad}}</td>
+                      <!-- <td>
+                        <div class="row">
+                        <div class="col-sm">
+                            <a >
+                            <span>
+                              <i class="fa fa-eye"></i>
+                              <span class="sm">&nbsp; Ver Detalle</span>
+                            </span>
+                          </a>
+                        </div>
+                      </div>
+                      </td>  -->
+
+                    </tr>
+                  </tbody>
+                </table>
+              <!-- </mat-tab>
+
+            </mat-tab-group>
+          </mat-card> -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

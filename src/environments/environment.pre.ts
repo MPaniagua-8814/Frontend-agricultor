@@ -1,0 +1,20 @@
+export const environment = {
+  viewlog: true,
+  production: false,
+  seguridad: true,
+  BASE_URL_SI: 'https://rtu.pre.sat.gob.gt/api/',
+  BASE_URL_PROSIS: 'https://rtu.pre.sat.gob.gt/api/sat_rtu/consultas',
+  BASE_API_SAT: 'https://rtu.pre.sat.gob.gt/api',
+  BASE_API_RTU: 'https://rtu.pre.sat.gob.gt/api/sat_rtu',
+  BASE_URL_PROXY_RTU: 'https://rtu.pre.sat.gob.gt/api/sat-app-proxy',
+  BASE_URL_PROXY: 'https://rtu.pre.sat.gob.gt/api/sat-gestor-app',
+  BASE_URL_GVP: 'https://rtu.pre.sat.gob.gt/api/sat_gaf_gvp',
+  BASE_MICROS_FRANQUICIAS: 'https://rtu.pre.sat.gob.gt/api/sat-aduanas-franq',
+  URL_FIRMA: 'https://rtu.pre.sat.gob.gt/api/smartengine-bit4id/smartengine/doPost/afp',
+  ID_APP: 52052,
+  ID_APP_NOTIFICACION: 36036,
+  ID_SITIO_ACS: '',
+  RUTA_BASE: '/aduanas-franquicias/',
+  NAME_APP: 'APP_CanEst',
+  AMBIENTE:'Pre-producción'
+};

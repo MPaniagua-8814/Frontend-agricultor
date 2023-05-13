@@ -1,0 +1,70 @@
+<div class="card">
+
+  <div class="row">
+    <div class="col-md-12">
+      <mat-card>
+        <h1 class="text-center">{{ title }} </h1>
+        <h2 class="text-center">Pesaje. #{{idPesaje}} </h2>
+      </mat-card>
+    </div>
+  </div>
+</div>
+<br>
+<div class="">
+
+  <div class="row">
+    <div class="col-md-12">
+      <mat-card>
+        <div class="modal-footer">
+          <button (click)='regresar()' style="border-radius: 10px;" class="btn btn-primary" type="submit">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i> Regresar
+          </button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>
+<br><br>
+<div class="container">
+
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <form [formGroup]="formDatosParcialidad">
+      <div class="form-group">
+        <label for="peso">Peso Kg.</label>
+        <input type="number" class="form-control" formControlName="peso"  placeholder="Ingrese peso en kilogramos">
+      </div>
+      <br>
+      <div class="form-group">
+        <label for="transporte">Transporte</label>
+        <select formControlName="transporte" class="form-control">
+          <option> Seleccione un Transporte</option>
+          <option *ngFor="let dato of transportes" value="{{dato.placa}}">{{dato.placa}}</option>
+        </select>
+      </div>
+      <br>
+      <div class="form-group">
+        <label for="transportista">Transportista</label>
+        <select formControlName="transportista" class="form-control">
+          <option> Seleccione un Transportista</option>
+          <option  *ngFor="let dato of transportistas" value="{{dato.idTransportista}}">{{dato.idTransportista}} - {{dato.nombre}}</option>
+          <!--<option llenarNit(rep.nombre, rep.nit) *ngFor="let dato of transportistas" value="{{ dato.idTransportista}}">{{dato.nombre}}</option>-->
+        </select>
+      </div>
+      <br>
+      <div class="form-group">
+        <label for="tipoMedida">Tipo de Medida</label>
+        <input type="text" class="form-control" formControlName="tipoMedida"  placeholder="Ingrese tipo medida de la parcialidad">
+      </div>
+      <br>
+      <button type="submit" class="btn btn-primary" (click)="crearParcialidad()" [disabled]="!formValid()">Crear</button>
+    </form>
+
+  </div>
+
+</div>
+
+
+
+</div>
