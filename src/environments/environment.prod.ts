@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  rutaMicros: 'https://beneficio-cafetito-ws.herokuapp.com'
 };
