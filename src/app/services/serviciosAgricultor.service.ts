@@ -13,7 +13,7 @@ export class ServiciosAgricultor {
   
   _url = 'https://beneficio-cafetito-ws.herokuapp.com';
   header = new HttpHeaders().set('Type-content', 'application/json')
-  nitTemporal = "99671395";
+  // nitTemporal = "99671395";
 
   constructor(private http: HttpClient) {
 
@@ -24,7 +24,8 @@ export class ServiciosAgricultor {
 
   obtener(){
     let header = new HttpHeaders().set('Type-content', 'application/json')
-    return this.http.get(this._url+'/beneficio/farmer/listar', { headers: header});
+    return null;
+    // return this.http.get(this._url+'/beneficio/farmer/listar', { headers: header});
   }
 
   obtenerPesajesPorNit(nit: string) {
@@ -57,36 +58,12 @@ export class ServiciosAgricultor {
     )*/
   }
 
-  crearTransporte( variables : any, variablesBeneficio: any){
-
-    return this.http.post(environment.rutaMicros+"/Agricultor/create/transport", variables).subscribe(
-      data =>{
-        console.log("data de crear transporte agricultor === " , data)
-      }
-    )
-
-    //tengo que consumir el de crear en el beneficio también
-    /*return*/ /*this.http.post(environment.rutaMicros+"/beneficio/count/create", variablesBeneficio).subscribe(
-      data =>{
-        console.log("data de crear pesaje en el beneficio === " , data)
-      }
-    )*/
+  crearTransporte( variables : any): Observable<any>{
+    return this.http.post(environment.rutaMicros+"/Agricultor/create/transport", variables)
   }
 
-  crearTransportista( variables : any){
-
-    return this.http.post(environment.rutaMicros+"/Agricultor/create/carrier", variables).subscribe(
-      data =>{
-        console.log("data de crear transportista agricultor === " , data)
-      }
-    )
-
-    //tengo que consumir el de crear en el beneficio también
-    /*return*/ /*this.http.post(environment.rutaMicros+"/beneficio/count/create", variablesBeneficio).subscribe(
-      data =>{
-        console.log("data de crear pesaje en el beneficio === " , data)
-      }
-    )*/
+  crearTransportista( variables : any): Observable<any>{
+    return this.http.post(environment.rutaMicros+"/Agricultor/create/carrier", variables)
   }
 
   obtenerParcialidadesPorIdPesaje( idPesaje : number){
@@ -95,14 +72,10 @@ export class ServiciosAgricultor {
     //return this.http.get(environment.rutaMicros+"/beneficio/count/parts/"+idPesaje, { headers: this.header})
   }
 
-  crearParcialidades( variables: any){
+  crearParcialidades( variables: any): Observable<any>{
     // crearParcialidades( variables: any, variablesBeneficio: any){
     //return 
-    this.http.post(environment.rutaMicros+"/Agricultor/count/parts/create", variables).subscribe(
-      data =>{
-        console.log("data de crear parcialidad en el agricultor === " , data)
-      }
-    )
+    return this.http.post(environment.rutaMicros+"/Agricultor/count/parts/create", variables)
     
     //se debe agregar en el beneficio
     // this.http.post(environment.rutaMicros+"/beneficio/count/parts/create", variablesBeneficio).subscribe(
@@ -117,10 +90,10 @@ export class ServiciosAgricultor {
   };
 
   obtenerDatosPrueba() {
-      this.http.get(environment.rutaMicros+"/beneficio/farmer/listar", {responseType:'text'}).subscribe( resp => {
-        console.log(resp)
-        return resp
-    })
+    //   this.http.get(environment.rutaMicros+"/beneficio/farmer/listar", {responseType:'text'}).subscribe( resp => {
+    //     console.log(resp)
+    //     return resp
+    // })
   };
 //https://beneficio-cafetito-ws.herokuapp.com/swagger-ui/index.html#/
 
@@ -135,6 +108,12 @@ export class ServiciosAgricultor {
 
     return this.http.get(environment.rutaMicros+"/Agricultor/list/carrier", { headers: this.header})
     ///return this.http.get(environment.rutaMicros+"/beneficio/carrier/list/"+this.nitTemporal, { headers: this.header})
+
+  }
+
+  obtenerCatalogoMedidas(id:any){
+
+    return this.http.get(environment.rutaMicros+"/beneficio/catalogue/" + id, { headers: this.header})
 
   }
 

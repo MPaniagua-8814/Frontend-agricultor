@@ -20,11 +20,11 @@ const routes: Routes = [
   component: BandejaPrincipalComponent
 },
 {
-  path: 'bandeja-principal/detalle-pesaje/:idPesaje/:idCuenta',
+  path: 'bandeja-principal/detalle-pesaje/:idPesaje/:idCuenta/:medida',
   component: DetallePesajeComponent
 },
 {
-  path: 'bandeja-principal/detalle-pesaje/:idPesaje/:idCuenta/crearParcialidad',
+  path: 'bandeja-principal/detalle-pesaje/:idPesaje/:idCuenta/:medida/crearParcialidad',
   component: CrearParcialidadComponent
 }
 

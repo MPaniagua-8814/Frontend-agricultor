@@ -32,12 +32,12 @@
   <div class="col-md-6">
     <form [formGroup]="formDatosParcialidad">
       <div class="form-group">
-        <label for="peso">Peso Kg.</label>
-        <input type="number" class="form-control" formControlName="peso"  placeholder="Ingrese peso en kilogramos">
+        <label for="peso">Peso ({{medidaPeso}})</label>
+        <input type="number" class="form-control" formControlName="peso"  placeholder="Ingrese peso en medida correspondiente">
       </div>
       <br>
       <div class="form-group">
-        <label for="transporte">Transporte</label>
+        <label for="transporte">Transportes disponibles</label>
         <select formControlName="transporte" class="form-control">
           <option> Seleccione un Transporte</option>
           <option *ngFor="let dato of transportes" value="{{dato.placa}}">{{dato.placa}}</option>
@@ -45,7 +45,7 @@
       </div>
       <br>
       <div class="form-group">
-        <label for="transportista">Transportista</label>
+        <label for="transportista">Transportistas disponibles</label>
         <select formControlName="transportista" class="form-control">
           <option> Seleccione un Transportista</option>
           <option  *ngFor="let dato of transportistas" value="{{dato.idTransportista}}">{{dato.idTransportista}} - {{dato.nombre}}</option>

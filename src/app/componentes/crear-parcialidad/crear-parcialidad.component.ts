@@ -1,6 +1,9 @@
+import { filter } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 import { ServiciosAgricultor } from 'src/app/services/serviciosAgricultor.service';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
@@ -15,10 +18,12 @@ export class CrearParcialidadComponent implements OnInit {
   title= "Crear parcialidad";
   //title= "Prueba";
 
-  transportes: any = [{idTransporte:"No existen transportes registrados"}];
+  transportes: any = [{placa:"No existen transportes registrados"}];
   transportistas: any = [{nombre:"No existen transportistas registrados."}];
   idPesaje : any;
   idCuenta: any;
+  usuarioActual : any;
+  medidaPeso: any;
 
   public formDatosParcialidad = new FormGroup({
     transporte: new FormControl(null, [Validators.required, Validators.maxLength(15)]),
@@ -29,39 +34,66 @@ export class CrearParcialidadComponent implements OnInit {
   });
 
   
-  constructor(private servicios: ServiciosAgricultor, private router: Router, private route: ActivatedRoute,) { }
+  constructor(private servicios: ServiciosAgricultor, private router: Router, 
+    private route: ActivatedRoute,private authService: AuthService) { }
 
 
   ngOnInit(): void {
 
-    this.idPesaje =  (this.route.snapshot.paramMap.get("idPesaje"));;
-    this.idCuenta =  (this.route.snapshot.paramMap.get("idCuenta"));;
+    this.idPesaje =  (this.route.snapshot.paramMap.get("idPesaje"));
+    this.idCuenta =  (this.route.snapshot.paramMap.get("idCuenta"));
+    this.medidaPeso =  (this.route.snapshot.paramMap.get("medida"));
     this.obtenerTransportistas();
     this.obtenerTransportes();
+    
+
+    //para validar que el usuario esté autenticado
+    if (!this.authService.isAuthenticated()) {
+      this.router.navigate(['/login']);
+    }
+
+    this.usuarioActual = sessionStorage.getItem("usuarioActual")
+
   }
 
   regresar(){
 
-    location.href = 'bandeja-principal/detalle-pesaje/'+this.idPesaje
+    location.href = 'bandeja-principal/detalle-pesaje/'+this.idPesaje+'/'+this.idCuenta+'/'+this.medidaPeso
   }
 
   obtenerTransportistas(){
-    let consulta : any= this.servicios.obtenerTransportistas().subscribe(
+    this.servicios.obtenerTransportistas().subscribe(
       resp =>{
-        console.log("transportistas", resp)
-        this.transportistas = resp;
-        return resp;
+        let temp:any = resp;
+        let temp2: any=[];
+        temp.map( (data:any ) =>{
+          if(data.disponible || data.idPesaje == Number(this.idPesaje)){
+            console.log("data == " , data)
+            temp2.push(data)
+          }
+        })
+        if( temp2?.length>0) this.transportistas = temp2;
+        return temp2;
       }
     );
 
   }
 
   obtenerTransportes(){
-    let consulta : any= this.servicios.obtenerTransportes().subscribe(
+    console.log("transportes inicial === " ,this.transportes)
+    this.servicios.obtenerTransportes().subscribe(
       resp =>{
-        console.log("transportes", resp)
-        this.transportes = resp;
-        return resp;
+        let temp : any = resp;
+        let temp2: any=[];
+        temp.map( (data:any ) =>{
+          if(data.disponible || data.idPesaje == Number(this.idPesaje)){
+            console.log("data == " , data)
+            temp2.push(data)
+          }
+        })
+        if( temp2?.length>0) this.transportes = temp2;
+        return temp2;
+      
       }
     );
   }
@@ -70,27 +102,30 @@ export class CrearParcialidadComponent implements OnInit {
 
     let datos = {
       // "idParcialidad": 0,  //es automático
-      "idCuenta": this.idCuenta, 
       "idPesaje": this.idPesaje, 
+      "idCuenta": this.idCuenta, 
       "idTransporte": this.formDatosParcialidad.controls.transporte.value, 
+      "idTransportista":this.formDatosParcialidad.controls.transportista.value,
       "pesoParcialidad": this.formDatosParcialidad.controls.peso.value, 
       "tipoMedida": this.formDatosParcialidad.controls.tipoMedida.value,
-      "idTransportista":this.formDatosParcialidad.controls.transportista.value
+      "usuarioAgrego": this.usuarioActual //agarrar username del servicio de jwt
     }
 
+    this.servicios.crearParcialidades( datos ).toPromise().then(
+      data =>{
+        console.log("data ==== " , data)
+        this.mensajeExito()
+      }
+    ).catch(err => {
+      console.log("entra al error ===== " , err.status)
+      if(err.status == 200 || err.status == 201){
+        this.mensajeExito()
+      }
+      else{
+        this.mostrarMensajeError(err.error)
+      }
+    });
 
-    let datos2 ={
-      "idCuenta": this.idPesaje,
-      "idTransporte": this.formDatosParcialidad.controls.transporte.value,
-      "idTransportista": this.formDatosParcialidad.controls.transportista.value,
-      "pesoEnviado": this.formDatosParcialidad.controls.peso.value,
-      "usuarioAgrego": "localhost"
-    }
-
-    console.log("que hay en datos 2", datos2)
-
-    this.servicios.crearParcialidades( datos );
-    this.mensajeExito()
   }
 
   formValid(){
@@ -109,8 +144,21 @@ export class CrearParcialidadComponent implements OnInit {
       },
       html: 'Se creó con éxito',
     }).then((result) => {
-      location.href = 'bandeja-principal/detalle-pesaje/'+this.idPesaje+'/'+this.idCuenta
+      location.href = 'bandeja-principal/detalle-pesaje/'+this.idPesaje+'/'+this.idCuenta+'/'+this.medidaPeso
     });
+  }
+
+
+  mostrarMensajeError(texto:any){
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: texto,
+      // footer: '<a href="">Why do I have this issue?</a>'
+    }).then((result) => {
+      location.href = 'bandeja-principal/detalle-pesaje/'+this.idPesaje+'/'+this.idCuenta+'/'+this.medidaPeso
+    });
+    
   }
 
 }

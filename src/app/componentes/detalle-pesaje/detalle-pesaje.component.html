@@ -41,7 +41,7 @@
 
 </div>
 <br><br>
-<div class="">
+<div class="container">
   <div class="row">
     <div class="col-md-12">
       <div class="card">
@@ -53,7 +53,7 @@
                       <th scope="col" class="text-left">#</th>
                       <th scope="col" class="text-left">Placa Transporte</th>
                       <th scope="col" class="text-left">Nombre Transportista</th>
-                      <th scope="col" class="text-left">Peso (Kg)</th>
+                      <th scope="col" class="text-left">Peso ({{medidaPeso}})</th>
                       <!-- <th scope="col" class="text-left">Peso Báscula (Peso Cabal SA)</th> -->
                       <th scope="col" class="text-left">Tipo de Medida</th>
                       <th scope="col" class="text-left">Fecha Recepcion Parcialidad</th>
@@ -72,10 +72,10 @@
                       <td>{{dato.idTransporte.placa}}</td>
                       <!-- <td>{{dato.idTransportista.nombre}}</td> -->
                       <td>{{dato.idTransportista.nombre}}</td>
-                      <td>{{dato.pesoParcialidad}}</td>
+                      <td>{{dato.pesoParcialidad}} {{medidaPeso}}</td>
                       <!-- <td>{{dato.pesoBascula}}</td> -->
                       <td>{{dato.tipoMedida}}</td>
-                      <td>{{dato.fechaRecepcionParcialidad}}</td>
+                      <td>{{formatoFecha(dato.fechaRecepcionParcialidad)}}</td>
                       <!-- <td>
                         <div class="row">
                         <div class="col-sm">
